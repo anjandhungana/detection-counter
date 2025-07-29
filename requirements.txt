@@ -1,6 +1,6 @@
 streamlit
 ultralytics
-opencv-python-contrib-headless
+opencv-contrib-python-headless
 pandas
 plotly
 matplotlib
