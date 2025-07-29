@@ -1,10 +1,9 @@
 streamlit
 ultralytics
-opencv-contrib-python-headless
+opencv-python-headless
 pandas
 plotly
 matplotlib
 fpdf
 supervision
 numpy
-libgl1-mesa-glx
