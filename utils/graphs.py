@@ -76,6 +76,25 @@ def display_graphs_and_outputs():
             image_format = "PNG"
             line_width = 2
 
+    # Static matplotlib
+    fig, ax = plt.subplots(figsize=(graph_width / 100, graph_height / 100))
+    df_counts.set_index("Second").plot(ax=ax, legend=False, color=line_color, linewidth=line_width)
+    ax.set_facecolor(background_color)
+    ax.set_title(chart_title)
+    ax.set_xlabel(x_axis_label)
+    ax.set_ylabel(y_axis_label)
+    if show_grid:
+        ax.grid(True, linestyle='--', linewidth=0.5, color='lightgrey')
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+    ax.set_xticks(np.arange(0, x_axis_max + 1, tick_interval_x))
+    ax.set_yticks(np.arange(0, y_axis_max + 1, tick_interval_y))
+    ax.set_ylim(bottom=0, top=y_axis_max)
+    image_ext = "png" if image_format == "PNG" else "jpg"
+    graph_path = os.path.join(tempfile.gettempdir(), f"detection_graph.{image_ext}")
+    fig.savefig(graph_path, dpi=png_dpi, format=image_format.lower())
+    plt.close(fig)
+
     with col2:
         fig = px.line(
             df_counts,
@@ -97,25 +116,6 @@ def display_graphs_and_outputs():
             col_dl1, col_dl2, col_dl3 = st.columns([1, 2, 1])
             with col_dl2:
                 st.download_button("Download Graph", f, file_name=f"detection_graph.{image_format.lower()}", key="centered_graph_button")
-
-    # Static matplotlib
-    fig, ax = plt.subplots(figsize=(graph_width / 100, graph_height / 100))
-    df_counts.set_index("Second").plot(ax=ax, legend=False, color=line_color, linewidth=line_width)
-    ax.set_facecolor(background_color)
-    ax.set_title(chart_title)
-    ax.set_xlabel(x_axis_label)
-    ax.set_ylabel(y_axis_label)
-    if show_grid:
-        ax.grid(True, linestyle='--', linewidth=0.5, color='lightgrey')
-    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
-    ax.set_xticks(np.arange(0, x_axis_max + 1, tick_interval_x))
-    ax.set_yticks(np.arange(0, y_axis_max + 1, tick_interval_y))
-    ax.set_ylim(bottom=0, top=y_axis_max)
-    image_ext = "png" if image_format == "PNG" else "jpg"
-    graph_path = os.path.join(tempfile.gettempdir(), f"detection_graph.{image_ext}")
-    fig.savefig(graph_path, dpi=png_dpi, format=image_format.lower())
-    plt.close(fig)
 
     # with open(graph_path, "rb") as f:
     #     st.download_button("Download Graph", f, file_name="detection_graph.png")
